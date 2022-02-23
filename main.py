@@ -5,16 +5,15 @@ from selenium.webdriver.support import expected_conditions as EC
 
 driver = webdriver.Chrome('/Users/nicolasrojasbernal/selenium_drivers/chromedriver 2')
 
-url = "https://testpages.herokuapp.com/styled/index.html"
+url = "https://testpages.herokuapp.com/styled/basic-html-form-test.html"
 driver.get(url)
 driver.implicitly_wait(3)  # Amount of seconds to wait to upload this website successfully
-my_element = driver.find_element_by_id("progressbars")  # This is just an object, to make actions with it
-my_element.click()
 
-# Explicit way to wait for some time until one condition is achieved
-WebDriverWait(driver, 15).until(
-    EC.text_to_be_present_in_element(
-        (By.ID, "status"),
-        "Stopped"
-    )
-)
+user_name = driver.find_element_by_name('username')
+password = driver.find_element_by_name('password')
+
+user_name.send_keys('BugGreen')
+password.send_keys('12345')
+
+submit_btn = driver.find_element_by_css_selector('input[value="submit"]')  # Filter using css.
+submit_btn.click()
