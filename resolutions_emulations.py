@@ -1,6 +1,7 @@
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
 from resolutions import screen_resolutions
+from time import sleep
 
 
 def define_emulation_settings(size: tuple, os: str) -> dict:
@@ -28,14 +29,24 @@ def ss_saver(driver, size: tuple, os: str):
     driver.save_screenshot(f"./ss/{os}_{size[0]}x{size[1]}.png".format(os, size))
 
 
-def create_emulation(size: tuple, os: str, url="https://testpages.herokuapp.com/styled/basic-html-form-test.html"):
+def create_emulation(size: tuple, os: str, url="https://app.saasmetrix.io/Login"):
     chrome_options = Options()
     screens_emulations = define_emulation_settings(size, os)
     chrome_options.add_experimental_option("mobileEmulation", screens_emulations)
-    driver = webdriver.Chrome('/Users/nicolasrojasbernal/selenium_drivers/chromedriver 2', options=chrome_options)
+    driver = webdriver.Chrome('chrome_driver/chromedriver 2', options=chrome_options)
     url = url
     driver.get(url)
-    driver.implicitly_wait(3)  # Amount of seconds to wait to upload this website successfully
+    driver.implicitly_wait(5)  # Amount of seconds to wait to upload this website successfully
+
+    email = driver.find_element_by_xpath("//input[@id='email']")
+    email.send_keys("nicolas@saasmetrix.de")
+
+    email = driver.find_element_by_xpath("//input[@id='password']")
+    email.send_keys("Test")
+
+    login_button = driver.find_element_by_xpath("//*[@id='submit_login']")
+    login_button.click()
+    sleep(3)
     ss_saver(driver, size, os)
 
 
